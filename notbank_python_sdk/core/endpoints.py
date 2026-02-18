@@ -104,6 +104,9 @@ class Endpoints(str, Enum):
     TRANSFER_FUNDS = "wallet/transfer-funds"
     GET_TRANSACTIONS = "wallet/transactions"
 
+    # subaccount
+    SUBACCOUNT = "subaccount"
+
     # quote
     QUOTES = "quotes"
     QUOTES_DIRECT = "quotes/direct"

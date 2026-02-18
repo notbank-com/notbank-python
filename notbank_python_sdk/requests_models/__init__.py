@@ -10,6 +10,7 @@ from notbank_python_sdk.requests_models.cancel_user_report import *
 from notbank_python_sdk.requests_models.confirm_fiat_withdraw_request import *
 from notbank_python_sdk.requests_models.confirm_whitelisted_address_request import *
 from notbank_python_sdk.requests_models.create_crypto_withdraw_request import *
+from notbank_python_sdk.requests_models.create_subaccount_request import *
 from notbank_python_sdk.requests_models.create_direct_quote_request import *
 from notbank_python_sdk.requests_models.create_fiat_deposit_request import *
 from notbank_python_sdk.requests_models.create_fiat_withdraw_request import *
@@ -49,6 +50,7 @@ from notbank_python_sdk.requests_models.get_order_history import *
 from notbank_python_sdk.requests_models.get_order_history_by_order_id import *
 from notbank_python_sdk.requests_models.get_order_status import *
 from notbank_python_sdk.requests_models.get_orders import *
+from notbank_python_sdk.requests_models.get_subaccounts_request import *
 from notbank_python_sdk.requests_models.get_orders_history import *
 from notbank_python_sdk.requests_models.get_owners_fiat_withdraw import *
 from notbank_python_sdk.requests_models.get_product_request import *
