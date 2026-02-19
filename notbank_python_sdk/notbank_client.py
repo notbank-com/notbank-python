@@ -58,6 +58,7 @@ from notbank_python_sdk.models.account_transaction import AccountTransaction
 from notbank_python_sdk.models.account_positions import AccountPosition
 from notbank_python_sdk.models.instrument_statistic import InstrumentStatistic
 from notbank_python_sdk.models.account_info import AccountInfo
+from notbank_python_sdk.models.subaccount import Subaccount, Subaccounts
 from notbank_python_sdk.models.product import Product
 from notbank_python_sdk.models.withdrawal_id_response import WithdrawalIdResponse
 from notbank_python_sdk.parsing import build_subscription_handler, parse_response_fn, parse_response_list_fn, parse_report_response_fn
@@ -70,6 +71,7 @@ from notbank_python_sdk.requests_models.cancel_replace_order_request import Canc
 from notbank_python_sdk.requests_models.cancel_user_report import CancelUserReportRequest
 from notbank_python_sdk.requests_models.confirm_fiat_withdraw_request import ConfirmFiatWithdrawRequest, ConfirmFiatWithdrawRequestInternal
 from notbank_python_sdk.requests_models.confirm_whitelisted_address_request import ConfirmWhiteListedAddressRequest, ConfirmWhiteListedAddressRequestInternal
+from notbank_python_sdk.requests_models.create_subaccount_request import CreateSubaccountRequest
 from notbank_python_sdk.requests_models.create_direct_quote_request import CreateDirectQuoteRequest
 from notbank_python_sdk.requests_models.create_fiat_deposit_request import CreateFiatDepositRequest
 from notbank_python_sdk.requests_models.create_fiat_withdraw_request import CreateFiatWithdrawRequest
@@ -112,6 +114,7 @@ from notbank_python_sdk.requests_models.get_order_history import GetOrderHistory
 from notbank_python_sdk.requests_models.get_order_history_by_order_id import GetOrderHistoryByOrderIdRequest
 from notbank_python_sdk.requests_models.get_order_status import GetOrderStatusRequest
 from notbank_python_sdk.requests_models.get_orders import GetOrdersRequest
+from notbank_python_sdk.requests_models.get_subaccounts_request import GetSubaccountsRequest
 from notbank_python_sdk.requests_models.get_orders_history import GetOrdersHistoryRequest
 from notbank_python_sdk.requests_models.get_ticker_history import GetTickerHistoryRequest
 from notbank_python_sdk.requests_models.get_trades_history import GetTradesHistoryRequest
@@ -1653,4 +1656,31 @@ class NotbankClient:
             parse_response_fn=parse_response_fn(
                 Quote, from_pascal_case=False),
             request_type=RequestType.POST
+        )
+
+    # subaccount
+
+    def create_subaccount(self, request: CreateSubaccountRequest) -> None:
+        """
+        https://apidoc.notbank.exchange/#createsubaccount
+        """
+        return self._client_connection.request(
+            endpoint=Endpoints.SUBACCOUNT,
+            endpoint_category=EndpointCategory.NB,
+            request_data=to_nb_dict(request),
+            parse_response_fn=lambda x: None,
+            request_type=RequestType.POST
+        )
+
+    def get_subaccounts(self, request: GetSubaccountsRequest = GetSubaccountsRequest()) -> Subaccounts:
+        """
+        https://apidoc.notbank.exchange/#getsubaccounts
+        """
+        return self._client_connection.request(
+            endpoint=Endpoints.SUBACCOUNT,
+            endpoint_category=EndpointCategory.NB,
+            request_data=to_nb_dict(request),
+            parse_response_fn=parse_response_fn(
+                Subaccounts, from_pascal_case=False),
+            request_type=RequestType.GET
         )
