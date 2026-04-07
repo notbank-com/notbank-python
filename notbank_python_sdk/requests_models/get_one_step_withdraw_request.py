@@ -4,11 +4,6 @@ from uuid import UUID
 
 
 @dataclass
-class AddWhitelistedAddressRequest:
+class GetOneStepWithdrawRequest:
     account_id: int
-    currency: str
-    network: str
-    address: str
-    label: str
-    otp: str
     user_id: Optional[UUID] = None

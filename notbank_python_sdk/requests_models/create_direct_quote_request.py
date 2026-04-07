@@ -1,5 +1,7 @@
 from dataclasses import dataclass
 from decimal import Decimal
+from typing import Optional
+from uuid import UUID
 
 from notbank_python_sdk.constants import QuoteOperation
 
@@ -11,3 +13,4 @@ class CreateDirectQuoteRequest:
     from_amount: Decimal
     to_currency: str
     operation: QuoteOperation
+    user_id: Optional[UUID] = None

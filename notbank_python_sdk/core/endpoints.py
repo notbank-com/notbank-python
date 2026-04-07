@@ -92,10 +92,12 @@ class Endpoints(str, Enum):
     # wallet
     BANKS = "banks"
     BANK_ACCOUNTS = "bank-accounts"
+    GET_PROVINCES = "provinces"
     GET_NETWORK_TEMPLATES = "wallet/crypto/withdrawal/templates"
     GET_DEPOSIT_ADDRESSES = "wallet/crypto"
     CREATE_DEPOSIT_ADDRESS = "wallet/crypto"
     WHITELISTED_ADDRESSES = "wallet/crypto/whitelist-addresses"
+    GET_ONE_STEP_WITHDRAW = "wallet/crypto/whitelist-addresses/one-step/status"
     UPDATE_ONE_STEP_WITHDRAW = "wallet/crypto/whitelist-addresses/one-step/status"
     CREATE_CRIPTO_WITHDRAW = "wallet/crypto/withdrawal"
     FIAT_DEPOSIT = "wallet/fiat/deposit"
@@ -111,6 +113,11 @@ class Endpoints(str, Enum):
     QUOTES = "quotes"
     QUOTES_DIRECT = "quotes/direct"
     QUOTES_INVERSE = "quotes/inverse"
+
+    # yield
+    YIELD_PRODUCTS = "yield/products"
+    YIELD_DEPOSIT = "savings/deposit"
+    YIELD_WITHDRAW = "savings/withdraw"
 
 
 class WebSocketEndpoint(str, Enum):

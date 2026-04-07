@@ -4,13 +4,5 @@ from uuid import UUID
 
 
 @dataclass
-class GetQuoteRequest:
-    quote_id: UUID
+class GetYieldProductsRequest:
     user_id: Optional[UUID] = None
-
-
-@dataclass
-class GetQuoteRequestInternal:
-    user_id: Optional[UUID] = None
-
-

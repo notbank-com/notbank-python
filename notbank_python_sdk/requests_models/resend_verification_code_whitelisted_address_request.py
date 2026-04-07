@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Union
+from typing import Optional
 from uuid import UUID
 
 
@@ -7,8 +7,10 @@ from uuid import UUID
 class ResendVerificationCodeWhitelistedAddressRequest:
     whitelisted_address_id: UUID
     account_id: int
+    user_id: Optional[UUID] = None
 
 
 @dataclass
 class ResendVerificationCodeWhitelistedAddressInternal:
     account_id: int
+    user_id: Optional[UUID] = None

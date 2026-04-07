@@ -107,6 +107,24 @@ class UpdateOneStepWithdrawAction(str, Enum):
 class DepositPaymentMethod(IntEnum):
     BANK_TRANSFER = 1
     WEB_PAY = 2
+    VIRTUAL_WALLET = 3
+    QR_CODE = 4
+    ASSISTED_BANK_TRANSFER = 5
+    CREDIT_OR_DEBIT_CARD = 6
+    CASH_OR_CARD = 7
+
+
+class YieldType(IntEnum):
+    VARIABLE = 1
+
+
+class WithdrawPaymentMethod(IntEnum):
+    BANK_TRANSFER = 1
+    VIRTUAL_WALLET = 3
+    QR_CODE = 4
+    ASSISTED_BANK_TRANSFER = 5
+    CREDIT_OR_DEBIT_CARD = 6
+    CASH_OR_CARD = 7
 
 
 class QuoteMode(str, Enum):
@@ -118,3 +136,42 @@ class QuoteOperation(IntEnum):
     BUY = 1
     SELL = 2
     CONVERSION = 3
+
+
+class WalletTransactionType(IntEnum):
+    OTHER = 0
+    DEPOSIT = 1
+    WITHDRAW = 2
+    TRANSFER = 3
+    TRADE = 4
+    PAYMENT = 5
+    RECTIFICATION = 6
+    FEE = 7
+    REVERSE = 8
+    HOLD = 9
+    MARGIN = 10
+    AIRDROP = 11
+    DISTRIBUTION = 12
+    MIGRATION = 13
+
+
+class WalletTransactionSubType(IntEnum):
+    OTHER = 0
+    PAYOUT = 1
+    PAYIN = 2
+    DEPOSIT = 3
+    WITHDRAW = 4
+    BANK_TO_EXCHANGE = 5
+    EXCHANGE_TO_BANK = 6
+    TRADE = 7
+    PAYMENT = 8
+    SIMPLE = 9
+    RECTIFICATION = 10
+    TRANSFER = 11
+    HOLD = 12
+    MARGIN = 13
+    AIRDROP = 14
+    ORDER = 15
+    DISTRIBUTION_ENTRY = 16
+    MIGRATION = 17
+    MANUAL_ENTRY = 18
