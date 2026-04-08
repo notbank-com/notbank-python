@@ -116,8 +116,8 @@ class Endpoints(str, Enum):
 
     # yield
     YIELD_PRODUCTS = "yield/products"
-    YIELD_DEPOSIT = "savings/deposit"
-    YIELD_WITHDRAW = "savings/withdraw"
+    YIELD_DEPOSIT = "yield/deposit"
+    YIELD_WITHDRAW = "yield/withdraw"
 
 
 class WebSocketEndpoint(str, Enum):
