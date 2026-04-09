@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from enum import Enum
 from typing import Optional
+from uuid import UUID
 
 from notbank_python_sdk.constants import BankAccountKind, PixType
 
@@ -15,3 +16,4 @@ class AddClientBankAccountRequest:
     agency: Optional[str] = None
     dv: Optional[str] = None
     province: Optional[str] = None
+    user_id: Optional[UUID] = None

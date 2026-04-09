@@ -2,6 +2,7 @@
 from dataclasses import dataclass
 from decimal import Decimal
 from typing import Optional
+from uuid import UUID
 
 
 @dataclass
@@ -12,3 +13,4 @@ class TransferFundsRequest:
     amount: Decimal
     otp: Optional[str] = None
     notes: Optional[str] = None
+    user_id: Optional[UUID] = None

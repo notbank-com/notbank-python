@@ -14,3 +14,4 @@ class CreateFiatDepositRequest:
     amount: Decimal
     bank_account_id: Optional[UUID] = None
     voucher: Optional[str] = None
+    user_id: Optional[UUID] = None

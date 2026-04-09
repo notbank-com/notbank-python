@@ -3,14 +3,14 @@ from decimal import Decimal
 from typing import Optional
 from uuid import UUID
 
+from notbank_python_sdk.constants import YieldType
+
 
 @dataclass
-class CreateCryptoWithdrawRequest:
+class WithdrawFromYieldRequest:
     account_id: int
-    currency: str
-    network: str
-    address: str
     amount: Decimal
-    memo_or_tag: Optional[str] = None
-    otp: Optional[str] = None
+    product_id: int
+    currency: str
+    type: YieldType
     user_id: Optional[UUID] = None
