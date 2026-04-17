@@ -17,7 +17,7 @@ class TestGetProvinces(unittest.TestCase):
         cls.client = NotbankClient(connection)
 
     def test_get_provinces(self):
-        response = self.client.get_provinces(GetProvincesRequest(country="AR"))
+        response = self.client.get_provinces(GetProvincesRequest(country="PE"))
         self.assertIsNotNone(response)
         self.assertIsInstance(response, list)
 

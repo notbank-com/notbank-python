@@ -2,12 +2,11 @@
 from dataclasses import dataclass
 from decimal import Decimal
 from typing import List
-from uuid import UUID
 
 
 @dataclass
 class Transaction:
-    id: UUID
+    id: int
     legacy_id: str
     currency: str
     direction: int

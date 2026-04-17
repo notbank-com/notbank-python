@@ -1,4 +1,5 @@
 from decimal import Decimal
+import re
 import unittest
 
 from notbank_python_sdk.notbank_client import NotbankClient
@@ -29,12 +30,13 @@ class TestYield(unittest.TestCase):
 
     def test_deposit_to_yield(self):
         self.assertGreater(len(self.products), 0, "No yield products available to test deposit")
-        product = self.products[0]
+        product_symbol = 'USDT'
+        product = next(p for p in self.products if re.search(r'\((\w+)\)', p.product_title).group(1) == product_symbol)
         response = self.client.deposit_to_yield(DepositToYieldRequest(
             account_id=self.credentials.account_id,
-            amount=Decimal("10"),
+            amount=Decimal("100"),
             product_id=product.product_id,
-            currency=product.product_title,
+            currency=product_symbol,
             type=YieldType.VARIABLE,
         ))
         self.assertIsNotNone(response)
@@ -42,12 +44,13 @@ class TestYield(unittest.TestCase):
 
     def test_withdraw_from_yield(self):
         self.assertGreater(len(self.products), 0, "No yield products available to test withdrawal")
-        product = self.products[0]
+        product_symbol = 'USDT'
+        product = next(p for p in self.products if re.search(r'\((\w+)\)', p.product_title).group(1) == product_symbol)
         response = self.client.withdraw_from_yield(WithdrawFromYieldRequest(
             account_id=self.credentials.account_id,
-            amount=Decimal("10"),
+            amount=Decimal("100"),
             product_id=product.product_id,
-            currency=product.product_title,
+            currency=product_symbol,
             type=YieldType.VARIABLE,
         ))
         self.assertIsNotNone(response)
