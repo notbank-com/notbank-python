@@ -68,6 +68,8 @@ DEFAULT_CAST: Dict[Type[Any], Any] = {
 def _cast_value_or_default(type_hooks: Dict[Type[T1], Callable[[T1], T2]], value: T1) -> Union[T1, T2]:
     cast_fn = type_hooks.get(type(value))
     if cast_fn is None:
+        if isinstance(value, Enum):
+            return value.value
         return value
     return cast_fn(value)
 
@@ -126,7 +128,8 @@ def from_dict(cls: Type[T1], data, no_pascal_case: List[str] = [], overrides: Di
             type_hooks={
                 Decimal: lambda x: Decimal(str(x)),
                 float: lambda x: Decimal(str(x)),
-                UUID: lambda x: UUID(x)
+                UUID: lambda x: UUID(x),
+                int: lambda x: int(x),
             }
         )
     )

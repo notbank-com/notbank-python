@@ -1559,16 +1559,23 @@ class NotbankClient:
 
     def create_fiat_withdraw(self, request: CreateFiatWithdrawRequest) -> Optional[str]:
         """
-        https://apidoc.notbank.exchange/#getownersfiatwithdraw
+        https://apidoc.notbank.exchange/#createfiatwithdraw
+
+        Returns None when withdrawal is acknowledged without confirmation step (non-ARS bank transfer, virtual wallet).
+        Returns UUID withdrawal_id when confirmation is required (ARS bank transfer).
         """
+        def parse_fn(data: Any) -> Optional[WithdrawalIdResponse]:
+            if data is None:
+                return None
+            return from_dict(WithdrawalIdResponse, data, from_pascal_case=False).withdrawal_id
+
         return self._client_connection.request(
             endpoint=Endpoints.FIAT_WITHDRAW,
             endpoint_category=EndpointCategory.NB,
             request_data=to_nb_dict(request),
-            parse_response_fn=parse_response_fn(
-                WithdrawalIdResponse, from_pascal_case=False),
+            parse_response_fn=parse_fn,
             request_type=RequestType.POST
-        ).withdrawal_id
+        )
 
     def confirm_fiat_withdraw(self, request: ConfirmFiatWithdrawRequest) -> None:
         """
@@ -1710,8 +1717,8 @@ class NotbankClient:
             endpoint=Endpoints.GET_PROVINCES,
             endpoint_category=EndpointCategory.NB,
             request_data=to_nb_dict(request),
-            parse_response_fn=parse_response_list_fn(
-                Province, from_pascal_case=False),
+            parse_response_fn=lambda data: [
+                Province(id=int(item[0]), name=item[1]) for item in data],
             request_type=RequestType.GET
         )
 
@@ -1742,7 +1749,7 @@ class NotbankClient:
             request_data=to_nb_dict(request),
             parse_response_fn=parse_response_list_fn(
                 YieldProduct, from_pascal_case=False),
-            request_type=RequestType.GET
+            request_type=RequestType.POST
         )
 
     def deposit_to_yield(self, request: DepositToYieldRequest) -> int:

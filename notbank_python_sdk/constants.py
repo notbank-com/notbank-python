@@ -118,6 +118,10 @@ class YieldType(IntEnum):
     VARIABLE = 1
 
 
+class YieldTypeStr(str, Enum):
+    VARIABLE = "variable"
+
+
 class WithdrawPaymentMethod(IntEnum):
     BANK_TRANSFER = 1
     VIRTUAL_WALLET = 3
