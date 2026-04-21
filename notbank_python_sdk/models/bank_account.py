@@ -8,7 +8,7 @@ from notbank_python_sdk.models.bank import Bank
 class BankAccount:
     id: UUID
     country: str
-    bank: Bank
+    bank: Optional[Bank]
     number: str
     kind: str
     currency: str
