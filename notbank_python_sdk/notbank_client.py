@@ -1,5 +1,5 @@
 from decimal import Decimal
-from typing import Any, Callable, List, Optional, Type, TypeVar, Dict
+from typing import Any, Callable, List, Optional, Type, TypeVar, Dict, Union
 from uuid import UUID
 import simplejson as json
 from notbank_python_sdk.client_connection import ClientConnection, RequestType
@@ -1511,15 +1511,21 @@ class NotbankClient:
             request_type=RequestType.POST
         )
 
-    def create_crypto_withdraw(self, request: CreateCryptoWithdrawRequest) -> UUID:
+    def create_crypto_withdraw(self, request: CreateCryptoWithdrawRequest) -> Union[UUID, int]:
         """
         https://apidoc.notbank.exchange/?http#createcriptowithdraw
         """
+        def _parse_response_fn(x):
+            try:
+                return UUID(str(x))
+            except (ValueError, AttributeError):
+                return int(x)
+
         return self._client_connection.request(
             endpoint=Endpoints.CREATE_CRIPTO_WITHDRAW,
             endpoint_category=EndpointCategory.NB,
             request_data=to_nb_dict(request),
-            parse_response_fn=lambda x: UUID(x),
+            parse_response_fn=_parse_response_fn,
             request_type=RequestType.POST
         )
 
@@ -1590,7 +1596,7 @@ class NotbankClient:
             request_type=RequestType.POST
         )
 
-    def transfer_funds(self, request: TransferFundsRequest) -> UUID:
+    def transfer_funds(self, request: TransferFundsRequest) -> int:
         """
         https://apidoc.notbank.exchange/#transferfunds
         """
@@ -1598,7 +1604,7 @@ class NotbankClient:
             endpoint=Endpoints.TRANSFER_FUNDS,
             endpoint_category=EndpointCategory.NB,
             request_data=to_nb_dict(request),
-            parse_response_fn=lambda x: UUID(x),
+            parse_response_fn=lambda x: int(x),
             request_type=RequestType.POST
         )
 
@@ -1608,7 +1614,7 @@ class NotbankClient:
         """
         return self._client_connection.request(
             endpoint=Endpoints.GET_TRANSACTIONS,
-            endpoint_category=EndpointCategory.NB_PAGE,
+            endpoint_category=EndpointCategory.NB,
             request_data=to_nb_dict(request),
             parse_response_fn=parse_response_fn(
                 Transactions, from_pascal_case=False),

@@ -23,13 +23,25 @@ class TestTransferFunds(unittest.TestCase):
 
     def test_transfer_funds(self):
         response = self.client.transfer_funds(TransferFundsRequest(
-            sender_account_id=235,
-            receiver_account_id=13,
-            currency_name="BTC",
-            amount=Decimal("0.01"),
-            otp="470888",
+            sender_account_id=72,
+            receiver_account_id=69,
+            currency_name="USDT",
+            amount=Decimal("1"),
+            otp="735463",
             notes="a test transfer",
             
+        ))
+        self.assertIsNotNone(response)
+
+    def test_transfer_funds_caas_user(self):
+        response = self.client.transfer_funds(TransferFundsRequest(
+            sender_account_id=1151,
+            receiver_account_id=69,
+            currency_name="USDT",
+            amount=Decimal("1"),
+            otp="699082",
+            notes="a test transfer with caas user",
+            user_id=UUID("8d9f2c00-e82a-4ec6-ba2e-7a4356351623"),
         ))
         self.assertIsNotNone(response)
 
