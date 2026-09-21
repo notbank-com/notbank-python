@@ -85,6 +85,7 @@ from notbank_python_sdk.requests_models.schedule_profit_and_loss_activity_report
 from notbank_python_sdk.requests_models.schedule_trade_activity_report import *
 from notbank_python_sdk.requests_models.schedule_transaction_activity_report import *
 from notbank_python_sdk.requests_models.send_order import *
+from notbank_python_sdk.requests_models.start_institutional_verification_request import *
 from notbank_python_sdk.requests_models.subscribe_account_events_request import *
 from notbank_python_sdk.requests_models.subscribe_level1_request import *
 from notbank_python_sdk.requests_models.subscribe_level2_request import *

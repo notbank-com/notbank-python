@@ -63,6 +63,7 @@ from notbank_python_sdk.models.product import Product
 from notbank_python_sdk.models.one_step_withdraw import OneStepWithdraw
 from notbank_python_sdk.models.province import Province
 from notbank_python_sdk.models.register_user_response import RegisterUserResponse
+from notbank_python_sdk.models.start_institutional_verification import StartInstitutionalVerificationResponse
 from notbank_python_sdk.models.withdrawal_id_response import WithdrawalIdResponse
 from notbank_python_sdk.models.yield_product import YieldProduct
 from notbank_python_sdk.parsing import build_subscription_handler, parse_response_fn, parse_response_list_fn, parse_report_response_fn
@@ -169,6 +170,7 @@ from notbank_python_sdk.requests_models.deposit_to_yield_request import DepositT
 from notbank_python_sdk.requests_models.withdraw_from_yield_request import WithdrawFromYieldRequest
 from notbank_python_sdk.requests_models.register_basic_user_request import RegisterBasicUserRequest
 from notbank_python_sdk.requests_models.register_advanced_user_request import RegisterAdvancedUserRequest
+from notbank_python_sdk.requests_models.start_institutional_verification_request import StartInstitutionalVerificationRequest
 from notbank_python_sdk.notbank_client_cache import NotbankClientCache
 from notbank_python_sdk.websocket.callback_identifier import CallbackIdentifier
 from notbank_python_sdk.websocket.subscription import Subscription, Unsubscription
@@ -1810,5 +1812,35 @@ class NotbankClient:
             request_data=to_nb_dict(request),
             parse_response_fn=parse_response_fn(
                 RegisterUserResponse, from_pascal_case=False, overrides={"user_id": "userId"}),
+            request_type=RequestType.POST
+        )
+
+    # verification
+
+    def start_institutional_verification(
+        self,
+        request: StartInstitutionalVerificationRequest = StartInstitutionalVerificationRequest(),
+    ) -> StartInstitutionalVerificationResponse:
+        """
+        https://docs.notbank.exchange/#start-institutional-verification
+
+        Starts the institutional verification process of the account and
+        returns the Sumsub access token the client has to hand to the Sumsub
+        Web/mobile sdk to go through it.
+
+        It replaces the retired multi step institutional flow (company,
+        members and documents schemas, types, declarations and statuses),
+        which is now handled entirely by Sumsub.
+
+        The account must be a business account with an active institutional
+        verification process, otherwise the server answers with an
+        invalid_request error. Requires an authenticated session (aptoken).
+        """
+        return self._client_connection.request(
+            endpoint=Endpoints.VERIFICATION_INSTITUTIONAL,
+            endpoint_category=EndpointCategory.NB,
+            request_data=to_nb_dict(request),
+            parse_response_fn=parse_response_fn(
+                StartInstitutionalVerificationResponse, from_pascal_case=False),
             request_type=RequestType.POST
         )
