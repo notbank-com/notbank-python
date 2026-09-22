@@ -6,15 +6,16 @@ from typing import Optional
 class StartInstitutionalVerificationResponse:
     """Response of the institutional verification start endpoint.
 
-    The server answers {"status": "success", "data": {"token": ...,
-    "user_id": ...}}, so 'token' and 'user_id' are always present.
+    The server answers {"status": "success", "data": {"link": ...,
+    "user_id": ...}}.
 
-    Ticket CMKT-5996 documents the payload as {"link": ..., "user_id": ...}
-    instead. The server source returns 'token' (the Sumsub access token) and
-    sends the Sumsub verification url to the client by email, so this SDK
-    follows the server and models 'link' as an optional field, which gets
-    populated if the server ever starts returning it.
+    'link' is the Sumsub verification url the client has to be redirected to
+    in order to go through the process. It is nullable: when the url cannot
+    be retrieved, or there is no active applicant request for the user, the
+    server still answers success with a null link and logs the problem, so
+    callers must handle None.
+
+    'user_id' is the uuid of the user the institutional process belongs to.
     """
-    token: str
+    link: Optional[str]
     user_id: str
-    link: Optional[str] = None

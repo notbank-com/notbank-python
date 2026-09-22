@@ -13,6 +13,7 @@ from notbank_python_sdk.requests_models.start_institutional_verification_request
 
 
 ENDPOINT = "account/verification/institutional"
+LINK = "https://sumsub.com/websdk/an-uuid"
 
 
 class RecordedRequest(NamedTuple):
@@ -75,7 +76,7 @@ class FakeResponse:
 
 class StartInstitutionalVerificationTestCase(unittest.TestCase):
     def test_request_is_a_post_to_the_nb_institutional_endpoint(self):
-        stub = StubConnection({"token": "tkn-123", "user_id": "an-uuid"})
+        stub = StubConnection({"link": LINK, "user_id": "an-uuid"})
         client = NotbankClient(stub.as_client_connection())
 
         client.start_institutional_verification(
@@ -89,7 +90,7 @@ class StartInstitutionalVerificationTestCase(unittest.TestCase):
         self.assertEqual(call.endpoint_category.val, "api/nb")
 
     def test_request_without_arguments_sends_an_empty_payload(self):
-        stub = StubConnection({"token": "tkn-123", "user_id": "an-uuid"})
+        stub = StubConnection({"link": LINK, "user_id": "an-uuid"})
         client = NotbankClient(stub.as_client_connection())
 
         client.start_institutional_verification()
@@ -100,7 +101,7 @@ class StartInstitutionalVerificationTestCase(unittest.TestCase):
         self.assertNotIn("phone", stub.last_call.request_data)
 
     def test_request_sends_phone_as_a_snake_case_key(self):
-        stub = StubConnection({"token": "tkn-123", "user_id": "an-uuid"})
+        stub = StubConnection({"link": LINK, "user_id": "an-uuid"})
         client = NotbankClient(stub.as_client_connection())
 
         client.start_institutional_verification(
@@ -110,34 +111,47 @@ class StartInstitutionalVerificationTestCase(unittest.TestCase):
                          {"phone": "+56911111111"})
 
     def test_response_is_parsed_from_the_unwrapped_data(self):
-        stub = StubConnection({"token": "tkn-123", "user_id": "an-uuid"})
+        stub = StubConnection({"link": LINK, "user_id": "an-uuid"})
         client = NotbankClient(stub.as_client_connection())
 
         response = client.start_institutional_verification()
 
         self.assertIsInstance(response, StartInstitutionalVerificationResponse)
-        self.assertEqual(response.token, "tkn-123")
+        self.assertEqual(response.link, LINK)
         self.assertEqual(response.user_id, "an-uuid")
-        self.assertIsNone(response.link)
 
-    def test_response_link_is_parsed_when_the_server_sends_it(self):
-        # CMKT-5996 documents a "link" field. The server returns "token", so
-        # "link" is optional and only gets populated if it ever shows up.
-        stub = StubConnection({
-            "token": "tkn-123",
-            "user_id": "an-uuid",
-            "link": "https://sumsub.com/idensic/l/#/an-uuid"})
+    def test_response_with_a_null_link_is_a_valid_success_response(self):
+        # The server answers success with a null link when the verification
+        # url cannot be retrieved, or when there is no active applicant
+        # request: it logs the problem and still returns 200, so the sdk has
+        # to parse it instead of blowing up.
+        stub = StubConnection({"link": None, "user_id": "an-uuid"})
         client = NotbankClient(stub.as_client_connection())
 
         response = client.start_institutional_verification()
 
-        self.assertEqual(
-            response.link, "https://sumsub.com/idensic/l/#/an-uuid")
+        self.assertIsInstance(response, StartInstitutionalVerificationResponse)
+        self.assertIsNone(response.link)
+        self.assertEqual(response.user_id, "an-uuid")
+
+    def test_response_parsing_ignores_unknown_keys(self):
+        # The parser is not strict, so an extra key the sdk does not model
+        # (such as the 'token' the endpoint used to return) is dropped
+        # instead of raising.
+        stub = StubConnection(
+            {"link": LINK, "user_id": "an-uuid", "token": "tkn-123"})
+        client = NotbankClient(stub.as_client_connection())
+
+        response = client.start_institutional_verification()
+
+        self.assertEqual(response.link, LINK)
+        self.assertEqual(response.user_id, "an-uuid")
+        self.assertFalse(hasattr(response, "token"))
 
     def test_response_handler_unwraps_the_nb_envelope(self):
         envelope = {
             "status": "success",
-            "data": {"token": "tkn-123", "user_id": "an-uuid"}}
+            "data": {"link": LINK, "user_id": "an-uuid"}}
 
         response = ResponseHandler.handle_nb_response(
             FakeResponse(envelope),
@@ -145,9 +159,22 @@ class StartInstitutionalVerificationTestCase(unittest.TestCase):
                 StartInstitutionalVerificationResponse, from_pascal_case=False),
             EndpointCategory.NB)
 
-        self.assertEqual(response.token, "tkn-123")
+        self.assertEqual(response.link, LINK)
         self.assertEqual(response.user_id, "an-uuid")
+
+    def test_response_handler_unwraps_an_envelope_with_a_null_link(self):
+        envelope = {
+            "status": "success",
+            "data": {"link": None, "user_id": "an-uuid"}}
+
+        response = ResponseHandler.handle_nb_response(
+            FakeResponse(envelope),
+            parse_response_fn(
+                StartInstitutionalVerificationResponse, from_pascal_case=False),
+            EndpointCategory.NB)
+
         self.assertIsNone(response.link)
+        self.assertEqual(response.user_id, "an-uuid")
 
     def test_response_handler_raises_on_an_error_status(self):
         envelope = {"status": "error", "message": "invalid_request"}

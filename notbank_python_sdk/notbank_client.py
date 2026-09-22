@@ -1825,8 +1825,10 @@ class NotbankClient:
         https://docs.notbank.exchange/#start-institutional-verification
 
         Starts the institutional verification process of the account and
-        returns the Sumsub access token the client has to hand to the Sumsub
-        Web/mobile sdk to go through it.
+        returns the Sumsub verification url the client has to be redirected
+        to in order to go through it. That url is nullable: the server still
+        answers success with a null link when it cannot be retrieved, so
+        callers must handle a None 'link'.
 
         It replaces the retired multi step institutional flow (company,
         members and documents schemas, types, declarations and statuses),

@@ -21,8 +21,11 @@ class TestStartInstitutionalVerification(unittest.TestCase):
             StartInstitutionalVerificationRequest())
         self.assertIsNotNone(response)
         self.assertIsInstance(response, StartInstitutionalVerificationResponse)
-        self.assertIsNotNone(response.token)
         self.assertIsNotNone(response.user_id)
+        # 'link' is nullable: the server answers success with a null link
+        # when the verification url cannot be retrieved, so only its presence
+        # is asserted here.
+        self.assertTrue(hasattr(response, "link"))
 
 
 if __name__ == "__main__":
