@@ -122,6 +122,13 @@ class Endpoints(str, Enum):
     YIELD_DEPOSIT = "yield/deposit"
     YIELD_WITHDRAW = "yield/withdraw"
 
+    # verification
+    # the legacy account/verification/institutional/{company,members,documents}
+    # routes (and their /schemas and /types variants) were retired server side
+    # when the flow moved to Sumsub, and now answer 404. They were never
+    # exposed by this sdk, so there is nothing to deprecate here.
+    VERIFICATION_INSTITUTIONAL = "account/verification/institutional"
+
 
 class WebSocketEndpoint(str, Enum):
     SUBSCRIBE_LEVEL2 = "SubscribeLevel2"
