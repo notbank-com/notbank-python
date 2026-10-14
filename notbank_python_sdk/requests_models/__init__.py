@@ -106,3 +106,4 @@ from notbank_python_sdk.requests_models.user_devices import *
 from notbank_python_sdk.requests_models.verification_level_config_request import *
 from notbank_python_sdk.requests_models.web_authenticate_user_request import *
 from notbank_python_sdk.requests_models.with_oms_id import *
+from notbank_python_sdk.requests_models.get_account_settlement_position_request import *
