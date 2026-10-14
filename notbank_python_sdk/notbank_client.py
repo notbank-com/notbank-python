@@ -7,6 +7,7 @@ from notbank_python_sdk.core.endpoint_category import EndpointCategory
 from notbank_python_sdk.core.endpoints import Endpoints, WebSocketEndpoint
 from notbank_python_sdk.core.converter import from_json_str, to_dict, from_dict, to_nb_dict
 from notbank_python_sdk.error import ErrorCode, NotbankException
+from notbank_python_sdk.models.account_settlement_positions import AccountSettlementPositions
 from notbank_python_sdk.models.cbu_owner import CbuOwner
 from notbank_python_sdk.models.account_fee import AccountFee
 from notbank_python_sdk.models.authenticate_response import AuthenticateResponse
@@ -90,6 +91,7 @@ from notbank_python_sdk.requests_models.generate_pnl_activity_report import Gene
 from notbank_python_sdk.requests_models.generate_product_delta_activity_report import GenerateProductDeltaActivityReportRequest
 from notbank_python_sdk.requests_models.generate_trade_activity_report import GenerateTradeActivityReportRequest
 from notbank_python_sdk.requests_models.generate_transaction_activity_report import GenerateTransactionActivityReportRequest
+from notbank_python_sdk.requests_models.get_account_settlement_position_request import GetAccountSettlementPositionsRequest
 from notbank_python_sdk.requests_models.get_account_trades import GetAccountTradesRequest
 from notbank_python_sdk.requests_models.fee_request import FeeRequest
 from notbank_python_sdk.requests_models.add_client_bank_account_request import AddClientBankAccountRequest
@@ -307,6 +309,19 @@ class NotbankClient:
             request,
             AccountInfo,
             response_conversion_overrides={"oms_id": "OMSID"}
+        )
+
+    def get_account_settlement_positions(
+        self,
+        request: GetAccountSettlementPositionsRequest
+    ) -> AccountSettlementPositions:
+        """
+        https://docs.alphaservices.cc/operator/v4-4-247/#getaccountsettlementpositions
+        """
+        return self._get_data(
+            Endpoints.GET_ACCOUNT_SETTLEMENT_POSITIONS,
+            request,
+            AccountSettlementPositions,
         )
 
     def logout(self) -> None:

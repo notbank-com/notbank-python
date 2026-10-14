@@ -8,6 +8,7 @@ class Endpoints(str, Enum):
     GET_ACCOUNT_POSITIONS = "GetAccountPositions"
     GET_ACCOUNT_INSTRUMENT_STATISTICS = "GetAccountInstrumentStatistics"
     GET_ACCOUNT_INFO = "GetAccountInfo"
+    GET_ACCOUNT_SETTLEMENT_POSITIONS = "GetAccountSettlementPositions"
 
     # authentication
     AUTHENTICATE_USER = "AuthenticateUser"
