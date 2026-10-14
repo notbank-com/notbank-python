@@ -315,9 +315,6 @@ class NotbankClient:
         self,
         request: GetAccountSettlementPositionsRequest
     ) -> AccountSettlementPositions:
-        """
-        https://docs.alphaservices.cc/operator/v4-4-247/#getaccountsettlementpositions
-        """
         return self._get_data(
             Endpoints.GET_ACCOUNT_SETTLEMENT_POSITIONS,
             request,
