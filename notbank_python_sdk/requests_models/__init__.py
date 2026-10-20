@@ -54,6 +54,7 @@ from notbank_python_sdk.requests_models.get_subaccounts_request import *
 from notbank_python_sdk.requests_models.get_orders_history import *
 from notbank_python_sdk.requests_models.get_provinces_request import *
 from notbank_python_sdk.requests_models.get_one_step_withdraw_request import *
+from notbank_python_sdk.requests_models.get_verification_status_request import *
 from notbank_python_sdk.requests_models.get_yield_products_request import *
 from notbank_python_sdk.requests_models.deposit_to_yield_request import *
 from notbank_python_sdk.requests_models.withdraw_from_yield_request import *
