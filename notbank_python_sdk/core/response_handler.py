@@ -56,6 +56,12 @@ class ResponseHandler:
             raise NotbankException(
                 ErrorCode.CONFIGURATION_ERROR,
                 f"notbank sdk badly configured. {e}")
+        except ValueError as e:
+            # dacite casts enums by calling them, so a value the sdk does not
+            # know yet (for example a new verification level) ends up here.
+            raise NotbankException(
+                ErrorCode.INVALID_RESPONSE,
+                f"unable to parse response data. {e}")
 
     @staticmethod
     def handle_ap_response(parse_response: Callable[[Data], T], response: requests.Response) -> T:
