@@ -140,6 +140,22 @@ class GetVerificationStatusTestCase(unittest.TestCase):
         self.assertIs(context.exception.code, ErrorCode.INVALID_RESPONSE)
         self.assertIn("a_new_level", str(context.exception))
 
+    def test_raises_notbank_exception_on_wrong_value_type(self):
+        # A field with an unexpected type must not leak dacite's
+        # WrongTypeError to the caller.
+        envelope = {
+            "status": "success",
+            "data": dict(FULL_STATUS, locked="yes")}
+
+        with self.assertRaises(NotbankException) as context:
+            ResponseHandler.handle_nb_response(
+                FakeResponse(envelope),
+                parse_response_fn(VerificationStatus, from_pascal_case=False),
+                EndpointCategory.NB)
+
+        self.assertIs(context.exception.code, ErrorCode.INVALID_RESPONSE)
+        self.assertIn("locked", str(context.exception))
+
 
 if __name__ == "__main__":
     unittest.main()
