@@ -129,6 +129,7 @@ class Endpoints(str, Enum):
     # when the flow moved to Sumsub, and now answer 404. They were never
     # exposed by this sdk, so there is nothing to deprecate here.
     VERIFICATION_INSTITUTIONAL = "account/verification/institutional"
+    VERIFICATION_STATUS_V2 = "v2/account/verification/status"
 
 
 class WebSocketEndpoint(str, Enum):

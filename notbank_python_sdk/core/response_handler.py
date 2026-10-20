@@ -9,7 +9,7 @@ from notbank_python_sdk.core.ap_data_handler import ApDataHandler
 from notbank_python_sdk.core.endpoint_category import EndpointCategory
 from notbank_python_sdk.error import ErrorCode, NotbankException, StandardErrorResponse
 from dacite.data import Data
-from dacite import Config, MissingValueError, from_dict as dacite_from_dict
+from dacite import Config, DaciteError, MissingValueError, from_dict as dacite_from_dict
 T = TypeVar('T')
 
 
@@ -56,6 +56,14 @@ class ResponseHandler:
             raise NotbankException(
                 ErrorCode.CONFIGURATION_ERROR,
                 f"notbank sdk badly configured. {e}")
+        except (DaciteError, ValueError) as e:
+            # dacite raises its own errors for values of an unexpected type,
+            # and casts enums by calling them, so a value the sdk does not
+            # know yet (for example a new verification level) raises a
+            # ValueError.
+            raise NotbankException(
+                ErrorCode.INVALID_RESPONSE,
+                f"unable to parse response data. {e}")
 
     @staticmethod
     def handle_ap_response(parse_response: Callable[[Data], T], response: requests.Response) -> T:
